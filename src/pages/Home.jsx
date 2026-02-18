@@ -16,6 +16,7 @@ const Home = () => {
     const [engineStatus, setEngineStatus] = useState("CHECKING...");
     const [searchQuery, setSearchQuery] = useState("");
     const [isSearching, setIsSearching] = useState(false);
+    const [isPanelOpen, setIsPanelOpen] = useState(true);
 
     // Simulation Parameters
     const [params, setParams] = useState({
@@ -109,6 +110,11 @@ const Home = () => {
                 })
             });
 
+            {/* Auto-close panel on mobile when simulation starts */ }
+            if (window.innerWidth < 768) {
+                setIsPanelOpen(false);
+            }
+
             const data = await response.json();
             if (!response.ok) throw new Error(data.detail || "Engine failure");
 
@@ -165,44 +171,74 @@ const Home = () => {
                 </form>
             </div>
 
-            {/* Variables Panel (Left) */}
-            <div className="position-absolute top-50 start-0 translate-middle-y ms-4 p-4 glass-panel pointer-events-auto"
-                style={{ width: '340px', zIndex: 100, borderRadius: '24px' }}>
-                <div className="d-flex align-items-center justify-content-center gap-3 mb-5 text-info opacity-75">
-                    <FaSlidersH /> <span className="small fw-black tracking-widest text-uppercase">Variables</span>
-                </div>
-
-                {[
-                    { key: 'carbon', label: 'CARBON EMISSIONS', icon: <FaWind className="text-info" />, min: -100, max: 100 },
-                    { key: 'pop', label: 'POPULATION GROWTH', icon: <FaUsers />, min: -50, max: 100 },
-                    { key: 'econ', label: 'ECONOMIC SHIFT', icon: <FaChartLine />, min: -50, max: 100 },
-                    { key: 'resource', label: 'RESOURCE USE', icon: <FaBoxOpen />, min: -50, max: 100 }
-                ].map((varItem) => (
-                    <div className="mb-4" key={varItem.key}>
-                        <div className="d-flex justify-content-between align-items-center x-small mb-2 text-white-50">
-                            <span className="d-flex align-items-center gap-2">{varItem.icon} {varItem.label}</span>
-                            <div className="input-group-custom d-flex align-items-center gap-1">
-                                <input
-                                    type="number"
-                                    className="number-input-small"
-                                    value={params[varItem.key]}
-                                    onChange={(e) => handleParamChange(varItem.key, e.target.value)}
-                                />
-                                <span className="opacity-50">%</span>
-                            </div>
-                        </div>
-                        <input type="range" className="w-100 custom-slider" min={varItem.min} max={varItem.max} value={params[varItem.key]} onChange={(e) => handleParamChange(varItem.key, e.target.value)} />
-                    </div>
-                ))}
-
-                <button
-                    onClick={() => runSimulation()}
-                    className={`btn w-100 rounded-pill py-3 fw-bold tracking-widest mt-4 shadow-lg transition-all ${!activeLocation ? 'btn-secondary opacity-50' : 'btn-info btn-simulate'}`}
-                    disabled={!activeLocation || isLoading}
+            {/* Variables Panel Toggle Button */}
+            {!isPanelOpen && (
+                <motion.div
+                    initial={{ x: -50, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    className="position-absolute top-50 start-0 translate-middle-y ms-2 ms-md-4 pointer-events-auto"
+                    style={{ zIndex: 90 }}
                 >
-                    {!activeLocation ? "SEARCH OR SELECT REGION" : isLoading ? "PROCESSING..." : "INITIATE SIMULATION"}
-                </button>
-            </div>
+                    <button
+                        onClick={() => setIsPanelOpen(true)}
+                        className="btn btn-dark border border-info border-opacity-50 text-info rounded-circle d-flex align-items-center justify-content-center shadow-glow"
+                        style={{ width: '48px', height: '48px', backdropFilter: 'blur(10px)', background: 'rgba(0,0,0,0.6)' }}
+                    >
+                        <FaSlidersH />
+                    </button>
+                </motion.div>
+            )}
+
+            {/* Variables Panel (Left) */}
+            <AnimatePresence>
+                {isPanelOpen && (
+                    <motion.div
+                        initial={{ x: -50, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        exit={{ x: -50, opacity: 0 }}
+                        className="position-absolute top-50 start-0 translate-middle-y ms-4 p-4 glass-panel pointer-events-auto"
+                        style={{ width: '340px', zIndex: 250, borderRadius: '24px' }}
+                    >
+                        <div className="d-flex align-items-center justify-content-between mb-4">
+                            <div className="d-flex align-items-center gap-3 text-info opacity-75">
+                                <FaSlidersH /> <span className="small fw-black tracking-widest text-uppercase">Variables</span>
+                            </div>
+                            <button onClick={() => setIsPanelOpen(false)} className="btn btn-sm text-white-50 p-1 border-0 rounded-circle hover-bg-white-10"><FaTimes /></button>
+                        </div>
+
+                        {[
+                            { key: 'carbon', label: 'CARBON EMISSIONS', icon: <FaWind className="text-info" />, min: -100, max: 100 },
+                            { key: 'pop', label: 'POPULATION GROWTH', icon: <FaUsers />, min: -50, max: 100 },
+                            { key: 'econ', label: 'ECONOMIC SHIFT', icon: <FaChartLine />, min: -50, max: 100 },
+                            { key: 'resource', label: 'RESOURCE USE', icon: <FaBoxOpen />, min: -50, max: 100 }
+                        ].map((varItem) => (
+                            <div className="mb-4" key={varItem.key}>
+                                <div className="d-flex justify-content-between align-items-center x-small mb-2 text-white-50">
+                                    <span className="d-flex align-items-center gap-2">{varItem.icon} {varItem.label}</span>
+                                    <div className="input-group-custom d-flex align-items-center gap-1">
+                                        <input
+                                            type="number"
+                                            className="number-input-small"
+                                            value={params[varItem.key]}
+                                            onChange={(e) => handleParamChange(varItem.key, e.target.value)}
+                                        />
+                                        <span className="opacity-50">%</span>
+                                    </div>
+                                </div>
+                                <input type="range" className="w-100 custom-slider" min={varItem.min} max={varItem.max} value={params[varItem.key]} onChange={(e) => handleParamChange(varItem.key, e.target.value)} />
+                            </div>
+                        ))}
+
+                        <button
+                            onClick={() => runSimulation()}
+                            className={`btn w-100 rounded-pill py-3 fw-bold tracking-widest mt-4 shadow-lg transition-all ${!activeLocation ? 'btn-secondary opacity-50' : 'btn-info btn-simulate'}`}
+                            disabled={!activeLocation || isLoading}
+                        >
+                            {!activeLocation ? "SEARCH OR SELECT REGION" : isLoading ? "PROCESSING..." : "INITIATE SIMULATION"}
+                        </button>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             {/* Analysis Panel (Right/Bottom) */}
             <AnimatePresence>
