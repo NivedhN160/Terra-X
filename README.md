@@ -26,6 +26,7 @@ TERRA-X is a state-of-the-art laboratory interface that allows users to manipula
 ## 🛠 Project Structure
 - [**DESIGN.md**](./DESIGN.md) - Deep dive into aesthetics, UI philosophy, and typography.
 - [**TECHNICAL.md**](./TECHNICAL.md) - Full technical breakdown of the architecture, data flow, and tech stack.
+- **Dockerfile** - Container configuration for Back4App deployment.
 
 ---
 
@@ -58,7 +59,18 @@ npm run dev
 
 ## 🌐 Deployment
 - **Frontend**: Hosted on [GitHub Pages](https://nivedhn160.github.io/Terra-X/).
-- **Backend**: Hosted on [Render](https://render.com/) or Railway.
+- **Backend**: Hosted on [Back4App](https://www.back4app.com/) or Railway.
+
+---
+
+## 🚀 Back4App Deployment (Backend)
+1. **Create Account**: Sign up at [Back4App](https://www.back4app.com/).
+2. **New App**: Hub -> Build New App -> **Containers**.
+3. **Connect**: Link your GitHub repo `NivedhN160/Terra-X`.
+4. **Settings**:
+   - **Root Directory**: `Terra-X` (since your code is in a subfolder).
+   - **Environment Variables**: Add `GROQ_API_KEY` and `OPENWEATHER_API_KEY`.
+5. **Health Check**: Set the path to `/health`.
 
 ---
 

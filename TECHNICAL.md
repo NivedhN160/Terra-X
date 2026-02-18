@@ -49,7 +49,7 @@ TERRA-X is a full-stack predictive simulation environment that combines **Three.
 - **API Keys**: All sensitive credentials reside in the `.env` file and are never exposed to the client.
 - **Deployment**:
     *   **Frontend**: Hosted on GitHub Pages via relative path routing.
-    *   **Backend**: Hosted on Render with dynamic port binding and CORS protection.
+    *   **Backend**: Hosted on Back4App with dynamic port binding and CORS protection.
 
 ---
 

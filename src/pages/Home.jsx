@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaSearch, FaTimes, FaGlobeAmericas, FaSlidersH, FaWind, FaUsers, FaChartLine, FaBoxOpen, FaFlask, FaCloudSun, FaExclamationTriangle } from 'react-icons/fa';
 
 // --- CONFIGURATION ---
-const API_BASE = import.meta.env.VITE_API_URL || "";
+const API_BASE = import.meta.env.VITE_API_URL || "https://terrax-hegfo8do.b4a.run";
 
 const Home = () => {
     const [result, setResult] = useState(null);
@@ -328,6 +328,18 @@ const Home = () => {
                     box-shadow: 0 0 10px rgba(0, 243, 255, 0.5);
                 }
                 .spacing-wider { letter-spacing: 0.4rem; text-transform: uppercase; }
+
+                /* Mobile Optimizations */
+                @media (max-width: 768px) {
+                    .glass-panel {
+                        backdrop-filter: blur(20px);
+                        margin: 10px !important;
+                        width: calc(100% - 20px) !important;
+                    }
+                    .h4 { font-size: 1.1rem; }
+                    .search-container { min-width: auto !important; width: 100%; }
+                    .number-input-small { width: 45px; font-size: 0.75rem; }
+                }
             `}</style>
         </div>
     );
