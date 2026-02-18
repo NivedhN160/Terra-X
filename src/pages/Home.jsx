@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaSearch, FaTimes, FaGlobeAmericas, FaSlidersH, FaWind, FaUsers, FaChartLine, FaBoxOpen, FaFlask, FaCloudSun, FaExclamationTriangle } from 'react-icons/fa';
 
 // --- CONFIGURATION ---
-const API_BASE = import.meta.env.VITE_API_URL || "https://terrax1-ysyp5mlx.b4a.run";
+const API_BASE = import.meta.env.VITE_API_URL || "https://terrax1-29n3v24d.b4a.run";
 
 const Home = () => {
     const [result, setResult] = useState(null);
@@ -166,7 +166,7 @@ const Home = () => {
             </div>
 
             {/* Variables Panel (Left) */}
-            <div className="position-absolute top-50 start-0 translate-middle-y ms-4 p-4 glass-panel d-none d-md-block pointer-events-auto"
+            <div className="position-absolute top-50 start-0 translate-middle-y ms-4 p-4 glass-panel pointer-events-auto"
                 style={{ width: '340px', zIndex: 100, borderRadius: '24px' }}>
                 <div className="d-flex align-items-center justify-content-center gap-3 mb-5 text-info opacity-75">
                     <FaSlidersH /> <span className="small fw-black tracking-widest text-uppercase">Variables</span>
