@@ -25,34 +25,27 @@ const Home = () => {
         resource: 0
     });
 
-    // Check Server Health (Handle Render Sleep)
+    // Check Server Health (Safe Polling)
     useEffect(() => {
-        let retryCount = 0;
-        const checkHealth = async () => {
+        let isActive = true;
+        const check = async () => {
             try {
                 const res = await fetch(`${API_BASE}/health`);
                 const data = await res.json();
-                if (data.status === "online") {
+                if (isActive && data.status === "online") {
                     setEngineStatus("ONLINE");
-                    clearInterval(healthInterval);
-                    // Switch to slower polling once online
-                    setInterval(checkHealth, 30000);
                 }
-            } catch {
-                retryCount++;
-                if (retryCount > 1 && retryCount < 10) {
-                    setEngineStatus("WAKING UP...");
-                } else if (retryCount >= 10) {
-                    setEngineStatus("OFFLINE");
-                } else {
-                    setEngineStatus("CONNECTING...");
-                }
+            } catch (err) {
+                if (isActive) setEngineStatus("CONNECTING...");
             }
         };
 
-        const healthInterval = setInterval(checkHealth, 3000); // Aggressive ping to wake Render
-        checkHealth();
-        return () => clearInterval(healthInterval);
+        check();
+        const interval = setInterval(check, 10000);
+        return () => {
+            isActive = false;
+            clearInterval(interval);
+        };
     }, []);
 
     const handleSearch = async (e) => {
