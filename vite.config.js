@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5000',
+        target: 'https://terrax1-gfp5u3xc.b4a.run',
         changeOrigin: true,
         secure: false,
       },

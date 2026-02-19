@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaSearch, FaTimes, FaGlobeAmericas, FaSlidersH, FaWind, FaUsers, FaChartLine, FaBoxOpen, FaFlask, FaCloudSun, FaExclamationTriangle } from 'react-icons/fa';
 
 // --- CONFIGURATION ---
-const API_BASE = import.meta.env.VITE_API_URL || "https://terrax1-29n3v24d.b4a.run";
+const API_BASE = import.meta.env.VITE_API_URL || "https://terrax1-gfp5u3xc.b4a.run";
 
 const Home = () => {
     const [result, setResult] = useState(null);
